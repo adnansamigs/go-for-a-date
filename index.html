@@ -233,7 +233,21 @@ input[type=date],input[type=time]{width:100%;font:inherit;font-size:18px;padding
         o2.connect(g2);g2.connect(a.destination);o2.start(s);o2.stop(s+.5)});
     }catch(e){}
   }
-
+var WEB3KEY='71d30379-7cdf-4f5b-98ad-5eeae1ef8b14';
+function notify(when,plan){
+  try{
+    fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({
+        access_key:WEB3KEY,
+        subject:'She said YES! 💖',
+        from_name:'Mochi',
+        message:'Date: '+when+'\nPlan: '+plan
+      })
+    }).catch(function(){});
+  }catch(e){}
+}
   confirm.addEventListener('click',function(){
     if(!dateIn.value)return;
     var p=dateIn.value.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]);
@@ -241,6 +255,7 @@ input[type=date],input[type=time]{width:100%;font:inherit;font-size:18px;padding
     var tv=$('time').value,ts='';
     if(tv){var q=tv.split(':'),h=+q[0],ap=h>=12?'PM':'AM';ts=' at '+((h%12)||12)+':'+q[1]+' '+ap}
     $('when').textContent=ds+ts;$('plan').textContent='Plan: '+plan;
+    notify($('when').textContent, plan);
     $('pick').classList.add('hidden');$('done').classList.remove('hidden');
     say("It's official!! I'm doing a happy dance 💃 Get ready for the best day!",'wow');anim('jump');
     var b=$('boom');b.classList.remove('go-boom');void b.offsetWidth;b.classList.add('go-boom');
